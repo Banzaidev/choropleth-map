@@ -30,10 +30,12 @@ sfruttando d3.geoPath().projection(proiezione d3.geoAlbersUsa()) */
 
 const dataCountyJSON = await d3.json('https://cdn.freecodecamp.org/testable-projects-fcc/data/choropleth_map/counties.json').then(data => data)
 const geoJSON = feature(dataCountyJSON, dataCountyJSON.objects.counties).features
-console.log(feature(dataCountyJSON, dataCountyJSON.objects.counties))
+
 //feature(dati da d3.json, oggetto specifico che contiene i dati) restituisce un oggetto e i dati geoJSON ottenuti dal topoJSON sono contenuti in features
 /* I dati nel file JSON sono espressi sottoforma di TopoJSON questo vuol dire che sono espressi sottoforma di archi condivisi 
 I dati in un geoJSON esprimono la geometria con punti, linee e poligoni disposti in coordinae geografiche (latitudine e longitudine) */
+
+const educationJSON = await d3.json('https://cdn.freecodecamp.org/testable-projects-fcc/data/choropleth_map/for_user_education.json').then(data => data)
 
 
  
@@ -47,3 +49,20 @@ d3.select('#graph > svg')
 .attr('fill', '#ccc')
 .attr('stroke','white')
 .attr('class','county')
+.attr('data-fips', data => data.id)
+
+
+const counties = d3.selectAll('.county')
+counties['_groups'][0].forEach(element => {
+  const dataFipsElem = element.getAttribute('data-fips')
+  educationJSON.forEach(data => {
+    const educationData  = data.bachelorsOrHigher
+    const stateData = data.state
+    const areaNameData = data.area_name
+    if(dataFipsElem == data.fips){
+      element.setAttribute('data-education',educationData)
+      element.setAttribute('state', stateData)
+      element.setAttribute('areaName',areaNameData)
+    }
+  })
+});
