@@ -7,12 +7,15 @@ document.querySelector('#app').innerHTML = `
     <h1 id='title'>United States Educational Attainment</h1>
     <h4 id='description'>Percentage of adults age 25 and older with a bachelor's degree or higher (2010-2014)</h4>
     <div id='graph'></div>
+    <span id='legend'></span>
   </div>
 `
 
 const graphSize = {
   width: 1000,
-  height: 1000
+  height: 1000,
+  legendWidth: 300,
+  legendHeight: 50
 }
 
 d3.select('#graph')
@@ -38,7 +41,22 @@ I dati in un geoJSON esprimono la geometria con punti, linee e poligoni disposti
 const educationJSON = await d3.json('https://cdn.freecodecamp.org/testable-projects-fcc/data/choropleth_map/for_user_education.json').then(data => data)
 
 
- 
+const scaleLegendColors = d3.scaleLinear()
+.domain([d3.min(educationJSON, data => data.bachelorsOrHigher), d3.max(educationJSON, data => data.bachelorsOrHigher)])
+.range(['white','red'])
+.interpolate(d3.interpolateHcl)
+
+const scaleLegend = d3.scaleLinear()
+.domain([d3.min(educationJSON, data => data.bachelorsOrHigher), d3.max(educationJSON, data => data.bachelorsOrHigher)])
+.range([0,graphSize.legendWidth])
+
+
+d3.select('#legend')
+.append('svg')
+.append('g')
+.call(d3.axisBottom(scaleLegend))
+
+
 d3.select('#graph > svg')
 .append('g')
 .selectAll('path')
@@ -46,8 +64,8 @@ d3.select('#graph > svg')
 .enter()
 .append('path')
 .attr('d', path) 
-.attr('fill', '#ccc')
 .attr('stroke','white')
+.attr('stroke-width','0.2px')
 .attr('class','county')
 .attr('data-fips', data => data.id)
 
@@ -63,6 +81,7 @@ counties['_groups'][0].forEach(element => {
       element.setAttribute('data-education',educationData)
       element.setAttribute('state', stateData)
       element.setAttribute('areaName',areaNameData)
+      element.setAttribute('fill',scaleLegendColors(educationData))
     }
   })
 });
