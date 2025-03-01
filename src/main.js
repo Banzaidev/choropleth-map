@@ -6,16 +6,17 @@ document.querySelector('#app').innerHTML = `
   <div>
     <h1 id='title'>United States Educational Attainment</h1>
     <h4 id='description'>Percentage of adults age 25 and older with a bachelor's degree or higher (2010-2014)</h4>
+    <div id='legend'></div>
     <div id='graph'></div>
-    <span id='legend'></span>
+    
   </div>
 `
 
 const graphSize = {
   width: 1000,
-  height: 1000,
+  height: 650,
   legendWidth: 300,
-  legendHeight: 50
+  legendHeight: 50,
 }
 
 d3.select('#graph')
@@ -50,11 +51,28 @@ const scaleLegend = d3.scaleLinear()
 .domain([d3.min(educationJSON, data => data.bachelorsOrHigher), d3.max(educationJSON, data => data.bachelorsOrHigher)])
 .range([0,graphSize.legendWidth])
 
+let rectsLegend = d3.range(d3.min(educationJSON, data => data.bachelorsOrHigher), d3.max(educationJSON, data => data.bachelorsOrHigher))
+
 
 d3.select('#legend')
 .append('svg')
+.attr('height',graphSize.legendHeight)
+.attr('width',graphSize.legendWidth)
 .append('g')
-.call(d3.axisBottom(scaleLegend))
+.call(d3.axisBottom(scaleLegend).tickSize(10))
+//tickSize per evitare che siano coperti dai rect
+
+d3.select('#legend > svg')
+.selectAll('rect')
+.data(rectsLegend)
+.enter()
+.append('rect')
+.attr('width',(graphSize.legendWidth / rectsLegend.length)+0.5)
+.attr('x',d => scaleLegend(d))
+.attr('y',0.5)
+.attr('fill',d => scaleLegendColors(d))
+.attr('height',6)
+
 
 
 d3.select('#graph > svg')
