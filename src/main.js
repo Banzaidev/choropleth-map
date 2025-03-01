@@ -8,7 +8,8 @@ document.querySelector('#app').innerHTML = `
     <h4 id='description'>Percentage of adults age 25 and older with a bachelor's degree or higher (2010-2014)</h4>
     <div id='legend'></div>
     <div id='graph'></div>
-    
+    <div id='tooltip'></div>
+
   </div>
 `
 
@@ -87,6 +88,34 @@ d3.select('#graph > svg')
 .attr('class','county')
 .attr('data-fips', data => data.id)
 
+const toolTip = d3.select('#tooltip')
+
+d3.selectAll('path')
+.on('mouseover',(e)=>{
+
+  if(toolTip.property('hidden')){
+    toolTip.property('hidden',false)
+
+  }
+
+
+  const county = e.target
+  const dataEducation  = county.getAttribute('data-education')
+  const state = county.getAttribute('state') 
+  const areaName = county.getAttribute('areaName')
+  
+  toolTip.attr('data-education',dataEducation)
+  toolTip.attr('state',state)
+  toolTip.attr('areaName',areaName)
+  toolTip.html(`<h6>${areaName}, ${state} : ${dataEducation}%</h6>`)
+  
+
+})
+
+d3.selectAll('path')
+.on('mouseout',()=>{
+  toolTip.property('hidden',true)
+})
 
 const counties = d3.selectAll('.county')
 counties['_groups'][0].forEach(element => {
