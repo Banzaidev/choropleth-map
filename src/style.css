@@ -23,9 +23,13 @@
 }
 
 #tooltip{
-    background-color: rgba(227, 139, 139, 0.489);
+    background-color: rgba(138, 248, 246, 0.489);
     padding: 0.1px;
     width: 195px;
     text-align: center;
     position: absolute;
+}
+
+path:hover{
+    stroke-width: 1.6px;
 }
