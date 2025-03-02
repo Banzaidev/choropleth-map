@@ -1,1 +1,1 @@
-Choropleth Map - Data Visualization Projects (freeCodeCamp) live site
+Choropleth Map - Data Visualization Projects (freeCodeCamp) live site: choropleth-map-kappa.vercel.app
