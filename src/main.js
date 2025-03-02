@@ -9,7 +9,7 @@ document.querySelector('#app').innerHTML = `
     <div id='legend'></div>
     <div id='graph'></div>
     <div id='tooltip'></div>
-
+    <h5 id='author'>By <a href='https://github.com/Banzaidev' target='__blank'>Banzaidev</a></h5>
   </div>
 `
 

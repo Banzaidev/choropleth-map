@@ -22,6 +22,19 @@
     justify-self: end;
 }
 
+#author{
+    text-align: center;
+}
+
+#author > a:link{
+    text-decoration: none;
+    color: red;
+}
+#author > a:visited{
+    color: red;
+}
+
+
 #tooltip{
     background-color: rgba(138, 248, 246, 0.489);
     padding: 0.1px;
