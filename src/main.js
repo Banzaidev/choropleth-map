@@ -93,13 +93,15 @@ const toolTip = d3.select('#tooltip')
 d3.selectAll('path')
 .on('mouseover',(e)=>{
 
+
   if(toolTip.property('hidden')){
     toolTip.property('hidden',false)
-
+    toolTip.style('left',`${e.pageX+10}px`)
+    toolTip.style('top',`${e.pageY-70}px`)
   }
 
-
   const county = e.target
+
   const dataEducation  = county.getAttribute('data-education')
   const state = county.getAttribute('state') 
   const areaName = county.getAttribute('areaName')
